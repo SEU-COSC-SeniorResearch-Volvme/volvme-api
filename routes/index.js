@@ -4,10 +4,10 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res) {
   res.json({
-	welcome: '~Welcome to the Volvme api~'
-	enpoints: '~\nENDPOINTS: ', 
-	'POST/signup | name,email,password => new_user', 
-	'POST/login | email,password => user,name'
+	welcome: '~Welcome to the Volvme api~',
+	enpoints: {
+		'POST/signup': 'name,email,password => new_user',
+		'POST/login': 'email,password => user,name'}
 	});
 });
 
