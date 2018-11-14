@@ -16,7 +16,7 @@ router.post('/signup', function (req, res, next){
 	})
 	new_user.save(function(err, new_user){
     	if (err) return next(err);
-    	return res.status(200).json({ new_user.name, new_user.email});
+    	return res.status(200).json(new_user);
     })
 });
 router.post('/login', function (req, res, next){
