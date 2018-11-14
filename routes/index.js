@@ -5,9 +5,14 @@ var router = express.Router();
 router.get('/', function(req, res) {
   res.json({
 	welcome: '~Welcome to the Volvme api~',
-	enpoints: { post: 
-		{ signup: 'name,email,password => new_user',
-		  login: 'email,password => user,name'}
+	enpoints: {
+			user: {
+				post: {
+					signup: 'name,email,password => new User',
+					login: 'email,password => user._id, user.name'
+				},
+				get: {}	
+			} // end of user endpoint
 		}
 	});
 });

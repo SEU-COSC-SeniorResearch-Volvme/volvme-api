@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 
 User.index =  function(req,res){
 		res.json({
-			data: 'User.index'
+			info: "This is the Volvme api user index point. Refer to the Volvme api index point (../api) for complete api documentation. Thanks for visiting Volvme :)",
+			suggestion: "Visit /signup to create a new user with us! :)"
 		})
 	};
 
