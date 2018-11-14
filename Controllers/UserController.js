@@ -4,13 +4,13 @@ const User = require('../Models/User');
 const bcrypt = require('bcryptjs')
 const bodyParser = require('body-parser');
 
-exports = User.index =  function(req,res){
+User.index =  function(req,res){
 		res.json({
 			data: 'User.index'
 		})
 	};
 
-exports = User.signup = function (req, res, next){
+User.signup = function (req, res, next){
 	const new_id = mongoose.Types.ObjectId();
 	const new_user = new User({
 		_id: new_id,
@@ -24,7 +24,7 @@ exports = User.signup = function (req, res, next){
     })
 };
 
-exports = User.login = function (req, res, next){
+User.login = function (req, res, next){
 	User.findOne(
 		//Query
 		{email: req.body.email, password: req.body.password},
@@ -37,3 +37,4 @@ exports = User.login = function (req, res, next){
 		}
 	); 
 };
+module.exports = User;

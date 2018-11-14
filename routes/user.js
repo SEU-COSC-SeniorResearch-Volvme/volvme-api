@@ -3,7 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/Volvme', {useNewUrlParser: true, createIndex: true});
 //Controler
-const User = require('../Models/User');
+const User = require('../Controllers/UserController');
 //Routes
 router.get('/', User.index);
 router.post('/signup', function (req, res, next){
