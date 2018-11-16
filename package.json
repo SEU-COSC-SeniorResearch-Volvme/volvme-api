@@ -12,8 +12,10 @@
     "cookie-parser": "~1.0.1",
     "debug": "~0.7.4",
     "express": "~4.0.0",
+    "jsonwebtoken": "^8.4.0",
     "jstransformer": "^1.0.0",
     "mongoose": "^5.3.11",
+    "mongoose-unique-validator": "^2.0.2",
     "morgan": "~1.0.0"
   }
 }

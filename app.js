@@ -6,11 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const indexRouter = require('./routes/index');
-const userRouter = require('./routes/user');
-
 mongoose.Promise = global.Promise;
-const db = mongoose.connect('mongodb://localhost/Volvme', {useNewUrlParser: true, useCreateIndex: true});
+mongoose.connect('mongodb://localhost/Volvme', {useNewUrlParser: true, autoIndex: true});
 const app = express();
 
 //Register middlewares
@@ -20,8 +17,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 //Register routes
-app.use('/', indexRouter);
-app.use('/user', userRouter);
+app.use('/', require('./routes/index'));
+app.use('/user', require('./routes/user'));
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
