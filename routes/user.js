@@ -23,7 +23,7 @@ router.post('/signup', function(req, res, next) {
 		location: req.body.location,
 		//password: req.body.password
 	})
-	.setPassword(req.body.password);
+	new_user.setPassword(req.body.password)
 	new_user.save(function(err, new_user){
     	if (err) return res.status(500).json(err);
     	let token = new_user.generateJWT();
