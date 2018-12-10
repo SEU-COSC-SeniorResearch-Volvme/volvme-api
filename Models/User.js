@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const validateUnique = require('mongoose-unique-validator');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-const secret = require('../config').secret;
+const secret = require('../config/secret').secret;
 
 const User = new Schema({
 
@@ -13,7 +13,7 @@ const User = new Schema({
 		type: String,
 		index: true,
 		required: [true, "Don't be shy! We need to know your name to sign you up :)"],
-		description: "Preferably your real name, but enter whatever name you go by will work for us :)",
+		description: "Preferably your real name, but whatever name you go by will work for us :)",
 		example: "John Doe or 5oz. Woozy"
 	},
 	email: {
@@ -38,18 +38,47 @@ const User = new Schema({
     location: {
     	type: String,
     	required: [true, "Location Required for Signup!"],
-    	match: /([^,]+),\s*(\w{2})\s*(\d{5}(?:-\d{4})?)/,
-    	description: "City, State 7-Digit zipcode",
-    	example: "Austin, TX 78704 or austin, tx 78704"
+    	match: /^\d{5}$/,
+    	description: "5-Digit zipcode",
+    	example: "78704"
     },
-	password: {
-		type: String,
-		required: true
+    image: {
+    	type: String,
+    	description: "The image source for a users profile image"
+    },
+    bio: {
+    	type: String,
+    	description: "User Biographical Information"
+    },
+    projects: [{
+    	type: Schema.Types.ObjectId,
+    	ref: 'Project'
+    }],
+    groups: [{
+    	type: Schema.Types.ObjectId,
+    	ref: 'Group'
+    }],
+    friends: [{
+    	type: Schema.Types.ObjectId,
+    	ref: 'User'
+    }],
+    // password: {
+    // 	type: String,
+    // 	required: [true, "We require a password for signup"]
+    // },
+	hash: {
+		type: String, 
+		required: true,
+		description: "The hash(password) stored for privacy"
 	},
-	hash: {type: String, description: "The hash(password) stored for privacy"},
-	salt: {type: String, description: "The salt used to hash the password"}
+	salt: {
+		type: String,
+		required: true,
+		description: "The salt used to hash the password"
+	}
 	//createdAt/updatedAt Timestamps
 }, {timestamps: true});
+
 
 //Mongoose Plugin to validate unique fields
 User.plugin(validateUnique, {message: 'This {PATH} is already associated with a Volvme User!'});
@@ -75,6 +104,7 @@ User.methods.generateJWT = function() {
 	return jwt.sign({
 		id: this._id,
 		name: this.name,
+		email: this.email,
 		exp: parseInt(exp.getTime() / 1000),
 	}, secret );
 };
@@ -84,21 +114,15 @@ User.methods.toAuthJSON = function() {
 	return {
 		name: this.name,
 		email: this.email,
+		token: this.generateJWT(),
 		phone: this.phone,
 		location: this.location,
-		token: thi.generateJWT(),
+		bio: this.bio,
+		image: this.image
 	};
 };
 
-
-User.method.index = function(req, res) {
-	res.json({
-			info: "This is the Volvme api user index point. Refer to the Volvme api index point (../api) for complete api documentation. Thanks for visiting Volvme :)",
-			suggestion: "Visit /signup to create a new user with us! :)"
-		});
-};
-
-User.create = function(){
+User.methods.create = function(){
 
 	const new_user = new User({
 		_id: mongoose.Types.ObjectId(),
